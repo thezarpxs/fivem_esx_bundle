@@ -53,3 +53,4 @@ See [issue #3](https://github.com/spritsail/fivem/issues/3)
 ## Credits
 
  - This image is based on the [spritsail/fivem](https://hub.docker.com/r/spritsail/fivem) image. Thanks to **Spritsail** !
+ - Thanks to **tabarra** as the creator and maintainer of the [txAdmin](https://github.com/tabarra/txAdmin) repository!
