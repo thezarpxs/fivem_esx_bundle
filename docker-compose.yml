@@ -2,15 +2,21 @@ version: '3'
 
 services:
   fivem:
-    image: spritsail/fivem
+    image: andruida/fivem
     container_name: fivem
     restart: always
     stdin_open: true
     tty: true
     volumes:
       - "/path/to/resources/folder:/config"
+      - "/path/to/txAdmin/config:/txAdmin/data"
     ports:
       - "30120:30120"
       - "30120:30120/udp"
+      - "40120:40120"
     environment:
       LICENCE_KEY: "license-key-here"
+      FIVEM_PORT: "30120"
+      WEB_PORT: "40120"
+      HOST_UID: 1000
+      HOST_GID: 1000

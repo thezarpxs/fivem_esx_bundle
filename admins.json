@@ -1,0 +1,9 @@
+[
+    {
+        "name": "administrator",
+        "password_hash": "$2a$05$0BcwNBc2JDb..NcJZsTOFuKVhhK3IxU4gpmInSC0lYiUg7NuqajQq",
+        "permissions": [
+            "all"
+        ]
+    }
+]

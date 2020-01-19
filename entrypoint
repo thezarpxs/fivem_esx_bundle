@@ -1,5 +1,58 @@
 #!/bin/sh
 
+if [ -z "${HOST_UID}" ]; then
+  echo "Host user ID not found in environment. Using root (0)."
+  export HOST_UID=0
+fi
+
+if [ -z "${HOST_GID}" ]; then
+  echo "Host group ID not found in environment. Using root (0)."
+  export HOST_GID=0
+fi
+
+if [ -z "${LICENCE_KEY}" ]; then
+  echo "Licence key not found in environment, please create one at https://keymaster.fivem.net!"
+  export LICENCE_KEY=
+fi
+
+if [ -z "${FIVEM_PORT}" ]; then
+  echo "FiveM port not found in environment. Using default 30120"
+  export FIVEM_PORT=30120
+fi
+
+if [ -z "${WEB_PORT}" ]; then
+  echo "Web port not found in environment."
+  export WEB_PORT=40120
+fi
+
+if ! getent group "${HOST_GID}" | cut -d: -f1 | read; then 
+	addgroup fivem -g "${HOST_GID}"
+	HOST_GROUPNAME="fivem"
+else
+	HOST_GROUPNAME=`getent group "${HOST_GID}" | cut -d: -f1`
+fi
+
+if ! getent passwd "${HOST_UID}" | cut -d: -f1 | read; then 
+	adduser fivem -D -G "$HOST_GROUPNAME"
+	HOST_USERNAME="fivem"
+else
+	HOST_USERNAME=`getent passwd "${HOST_UID}" | cut -d: -f1`
+fi
+
+if [ -z "${PUBLIC_IP}" ]; then
+  echo "Public IP not found in environment. Trying to get IP..."
+  IP_RESULT=`curl -s 'https://api.myip.com' | jq -r '.ip'`
+  if [ -z "${IP_RESULT}" ]; then
+    echo "Unable to get public IP, using 0.0.0.0"
+    export PUBLIC_IP="0.0.0.0"
+  else
+	echo "Using ${IP_RESULT}"
+	export PUBLIC_IP="${IP_RESULT}"
+  fi
+fi
+
+
+
 if ! find . -mindepth 1 | read; then
   echo -e "Creating default configs...\n"
   cp -r /opt/cfx-server-data/* /config
@@ -8,15 +61,21 @@ if ! find . -mindepth 1 | read; then
   echo "----------------------------------------------"
   echo "Your RCON password is set to: ${RCON_PASS}"
   echo -e "----------------------------------------------\n"
+  sed -i "s/{LICENCE_KEY}/${LICENCE_KEY}/g" /config/server.cfg;
+  sed -i "s/{PORT}/${FIVEM_PORT}/g" /config/server.cfg;
+  chown "$HOST_USERNAME":"$HOST_GROUPNAME" -R /config
 fi
 
-if [ -z "${LICENCE_KEY}" ]; then
-  echo "Licence key not found in environment, please create one at https://keymaster.fivem.net!"
-  exit 1
+cd /txAdmin/data
+
+if ! find . -mindepth 1 | read; then
+  echo "Creating txAdmin configs..."
+  cp -r /txAdmin/data.orig/* /txAdmin/data
+  sed -i "s/{WEB_PORT}/${WEB_PORT}/g" /txAdmin/data/default/config.json;
+  sed -i "s/{PUBLIC_IP}/${PUBLIC_IP}/g" /txAdmin/data/default/config.json;
+  chown "$HOST_USERNAME":"$HOST_GROUPNAME" -R /txAdmin/data
 fi
 
-exec /opt/cfx-server/FXServer \
-       +set citizen_dir /opt/cfx-server/citizen/ \
-       +exec /config/server.cfg \
-       +set sv_licenseKey ${LICENCE_KEY} \
-       $@
+cd /txAdmin
+
+exec su "$HOST_USERNAME" -c "/usr/bin/node src/index.js default"
