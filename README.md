@@ -1,6 +1,10 @@
 [hub]: https://hub.docker.com/r/andruida/fivem
 [git]: https://github.com/Andruida/fivem
 
+# Discontinued repository
+
+Since txAdmin is included in the latest FXServer builds, there is no need for Docker containers with txAdmin built in.
+
 # [andruida/fivem][hub]
 
 This docker image allows you to run a server for FiveM, a modded GTA multiplayer program.
