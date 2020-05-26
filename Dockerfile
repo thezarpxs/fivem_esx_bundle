@@ -1,8 +1,8 @@
 
 # BASED ON THE spritsail/fivem IMAGE! HUGE THANKS!
 
-ARG FIVEM_NUM=2001
-ARG FIVEM_VER=2001-80265bbee0cf4b7d1a408832f8ba7dc4f294b554
+ARG FIVEM_NUM=2430
+ARG FIVEM_VER=2430-c9ba7e7d93a06c032892ae67885ee84cc6762428
 ARG DATA_VER=2bde7889b4593d842e911827a33294211f40de93
 
 FROM spritsail/alpine:3.10 as builder
@@ -26,7 +26,7 @@ RUN apk update && apk upgrade \
  && apk add git \
  && git clone -n https://github.com/tabarra/txAdmin.git \
  && cd txAdmin \
- && git checkout 6a442efdafa61dc26610c6d04b45f91f5ce24c24 \
+ && git checkout e5f687baf3c947592de5a7c009a995575694fbff \
  && npm i && cd .. \
  && mkdir fivem_run
 
