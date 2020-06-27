@@ -25,30 +25,23 @@ if [ -z "${WEB_PORT}" ]; then
   export WEB_PORT=40120
 fi
 
+if [ -z "${SERVER_PROFILE}" ]; then
+  echo "txAdmin profile not found in environment. Using dev_server"
+  export SERVER_PROFILE="dev_server"
+fi
+
 if ! getent group "${HOST_GID}" | cut -d: -f1 | read; then 
-	addgroup fivem -g "${HOST_GID}"
-	HOST_GROUPNAME="fivem"
+  addgroup fivem -g "${HOST_GID}"
+  HOST_GROUPNAME="fivem"
 else
-	HOST_GROUPNAME=`getent group "${HOST_GID}" | cut -d: -f1`
+  HOST_GROUPNAME=`getent group "${HOST_GID}" | cut -d: -f1`
 fi
 
 if ! getent passwd "${HOST_UID}" | cut -d: -f1 | read; then 
-	adduser fivem -D -G "$HOST_GROUPNAME"
-	HOST_USERNAME="fivem"
+  adduser fivem -D -G "$HOST_GROUPNAME" --uid "$HOST_UID"
+  HOST_USERNAME="fivem"
 else
-	HOST_USERNAME=`getent passwd "${HOST_UID}" | cut -d: -f1`
-fi
-
-if [ -z "${PUBLIC_IP}" ]; then
-  echo "Public IP not found in environment. Trying to get IP..."
-  IP_RESULT=`curl -s 'https://api.myip.com' | jq -r '.ip'`
-  if [ -z "${IP_RESULT}" ]; then
-    echo "Unable to get public IP, using 0.0.0.0"
-    export PUBLIC_IP="0.0.0.0"
-  else
-	echo "Using ${IP_RESULT}"
-	export PUBLIC_IP="${IP_RESULT}"
-  fi
+  HOST_USERNAME=`getent passwd "${HOST_UID}" | cut -d: -f1`
 fi
 
 
@@ -58,24 +51,29 @@ if ! find . -mindepth 1 | read; then
   cp -r /opt/cfx-server-data/* /config
   RCON_PASS="${RCON_PASSWORD-$(tr -dc 'a-zA-Z0-9' < /dev/urandom | head -c 16)}"
   sed -i "s/{RCON_PASS}/${RCON_PASS}/g" /config/server.cfg;
+  sed -i "s/{FIVEM_PORT}/${FIVEM_PORT}/g" /config/server.cfg;
   echo "----------------------------------------------"
   echo "Your RCON password is set to: ${RCON_PASS}"
   echo -e "----------------------------------------------\n"
   sed -i "s/{LICENCE_KEY}/${LICENCE_KEY}/g" /config/server.cfg;
-  sed -i "s/{PORT}/${FIVEM_PORT}/g" /config/server.cfg;
-  chown "$HOST_USERNAME":"$HOST_GROUPNAME" -R /config
 fi
 
-cd /txAdmin/data
+chown "$HOST_USERNAME":"$HOST_GROUPNAME" -R /config
+# find /config -type d -exec chmod 770 {} +
+# find /config -type f -exec chmod 660 {} +
 
-if ! find . -mindepth 1 | read; then
-  echo "Creating txAdmin configs..."
-  cp -r /txAdmin/data.orig/* /txAdmin/data
-  sed -i "s/{WEB_PORT}/${WEB_PORT}/g" /txAdmin/data/default/config.json;
-  sed -i "s/{PUBLIC_IP}/${PUBLIC_IP}/g" /txAdmin/data/default/config.json;
-  chown "$HOST_USERNAME":"$HOST_GROUPNAME" -R /txAdmin/data
+if [ -z "${LICENCE_KEY}" ]; then
+  echo "Licence key not found in environment, please create one at https://keymaster.fivem.net!"
+  exit 1
 fi
 
-cd /txAdmin
+mkdir -p /txData
+chown ${HOST_USERNAME}:${HOST_GROUPNAME} -R /txData
+# find /txData -type d -exec chmod 770 {} +
+# find /txData -type f -exec chmod 660 {} +
 
-exec su "$HOST_USERNAME" -c "/usr/bin/node src/index.js default"
+exec su "$HOST_USERNAME" -c "/opt/cfx-server/FXServer \
+       +set citizen_dir /opt/cfx-server/citizen/ \
+       +set serverProfile ${SERVER_PROFILE} \
+       +set txAdminPort ${WEB_PORT} \
+       $@"

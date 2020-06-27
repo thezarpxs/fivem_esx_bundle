@@ -2,19 +2,20 @@ version: '3'
 
 services:
   fivem:
-    image: andruida/fivem
+    image: andruida/fivem:latest
     container_name: fivem
-    restart: always
+    restart: on-failure
     stdin_open: true
     tty: true
     volumes:
       - "/path/to/resources/folder:/config"
-      - "/path/to/txAdmin/config:/txAdmin/data"
+      - "/path/to/txAdmin/config:/txData"
     ports:
       - "30120:30120"
       - "30120:30120/udp"
       - "40120:40120"
     environment:
+      SERVER_PROFILE: "default"
       LICENCE_KEY: "license-key-here"
       FIVEM_PORT: "30120"
       WEB_PORT: "40120"
