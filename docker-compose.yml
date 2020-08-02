@@ -1,15 +1,20 @@
-version: '3'
-
+---
+version: '2'
 services:
+# -------------------------------------------------------------------
   fivem:
-    image: andruida/fivem:latest
+    image: henkallsn/fivem_esx_bundle:latest
     container_name: fivem
     restart: on-failure
     stdin_open: true
     tty: true
     volumes:
+      # Remember to change.
       - "/path/to/resources/folder:/config"
+      # Remember to change.
       - "/path/to/txAdmin/config:/txData"
+      # DO NOT CHANGE THIS (sql file dir)
+      - sqlfile:/sqlfile
     ports:
       - "30120:30120"
       - "30120:30120/udp"
@@ -20,4 +25,34 @@ services:
       FIVEM_PORT: "30120"
       WEB_PORT: "40120"
       HOST_UID: 1000
-      HOST_GID: 1000
+      HOST_GID: 100
+      # Remember to change.
+      FIVEM_HOSTNAME: "hostname-to-fivem-server"
+      # Remember to change.
+      STEAM_WEBAPIKEY: "api-key-herer"
+    depends_on:
+      - mariadb
+# -------------------------------------------------------------------
+  mariadb:
+    image: mariadb:10.4
+    restart: on-failure
+    volumes:
+      # Remember to change.
+      - /path/to/mariadb:/var/lib/mysql
+      # DO NOT CHANGE THIS (sql file dir)
+      - sqlfile:/docker-entrypoint-initdb.d/:ro
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      # Change to your timezone
+      TZ: Europe/Copenhagen
+# -------------------------------------------------------------------
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin:latest
+    restart: on-failure
+    ports:
+      - 8100-8105:80
+    environment:
+      - PMA_HOST=mariadb
+    depends_on:
+      - mariadb
+# -------------------------------------------------------------------

@@ -1,5 +1,5 @@
-ARG FIVEM_NUM=2431
-ARG FIVEM_VER=2431-350dd7bd5c0176216c38625ad5b1108ead44674d
+ARG FIVEM_NUM=2786
+ARG FIVEM_VER=2786-8ce1ab72e79fdc5d4f771a155debce76381db02a
 ARG DATA_VER=dd38bd01923a0595ecccef8026f1310304d7b0e3
 
 FROM spritsail/alpine:3.10 as builder
@@ -20,8 +20,9 @@ RUN wget -O- http://runtime.fivem.net/artifacts/fivem/build_proot_linux/master/$
  && apk -p $PWD add tini mariadb-dev tzdata
 
 ADD server.cfg opt/cfx-server-data
+ADD resources.tar opt/cfx-server-data
+ADD database.sql opt/cfx-server-data
 ADD entrypoint usr/bin/entrypoint
-
 RUN chmod +x /output/usr/bin/entrypoint
 
 #================

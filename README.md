@@ -1,38 +1,78 @@
-[hub]: https://hub.docker.com/r/andruida/fivem
+[hub]: https://hub.docker.com/r/henkallsn/fivem_esx_bundle
 [git]: https://github.com/Andruida/fivem
 
-# [andruida/fivem][hub]
+# [henkallsn/fivem_esx_bundle][hub] <img align="right" height="250px" src="https://portforward.com/fivem/fivem-logo.png">
 
 This docker image allows you to run a server for FiveM, a modded GTA multiplayer program.
-This image also includes [txAdmin](https://github.com/tabarra/txAdmin), an in-browser server management software.
+This image includes [txAdmin](https://github.com/tabarra/txAdmin), an in-browser server management software.
 Upon first run, the configuration is generated in the host mount for the `/config` directory, and for the `/txData` directory (that contains the txAdmin configuration).
-The container should be stopped so fivem can be configured to the user requirements in the `server.cfg`.
+This bundle is made to run with a Mariadb server.
+
+[![](https://images.microbadger.com/badges/version/henkallsn/fivem_esx_bundle.svg)](https://microbadger.com/images/henkallsn/fivem_esx_bundle "Get your own version badge on microbadger.com")
+[![](https://images.microbadger.com/badges/image/henkallsn/fivem_esx_bundle.svg)](https://microbadger.com/images/henkallsn/fivem_esx_bundle "Get your own image badge on microbadger.com")
+[![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=RVCZJCWKD9CSW&currency_code=EUR&source=url)
 
 ## Licence Key
+
 
 A freely obtained licence key is required to use this server, which should be declared as `$LICENCE_KEY`. A tutorial on how to obtain a licence key can be found [here](https://forum.fivem.net/t/explained-how-to-make-add-a-server-key/56120)
 
 ## Usage
 
-Use the docker-compose script provided or use the line below:
+Use the docker-compose script provided:
 
 ```sh
-docker run -d \
-  --name FiveM \
-  --restart on-failure \
-  -p 30120:30120 \
-  -p 30120:30120/udp \
-  -p 40120:40120 \
-  -e WEB_PORT=40120 \
-  -e FIVEM_PORT=30120 \
-  -e HOST_UID=1000 \
-  -e HOST_GID=1000 \
-  -e LICENCE_KEY=<your-license-key> \
-  -e SERVER_PROFILE=default \
-  -v /volumes/fivem:/config \
-  -v /volumes/txAdmin:/txData
-  -tid \
-  andruida/fivem
+---	  
+version: '2'
+services:
+  fivem:
+    image: henkallsn/fivem_esx_bundle:latest
+    container_name: fivem
+    restart: on-failure
+    stdin_open: true
+    tty: true
+    volumes:
+      # Remember to change.
+      - "/path/to/resources/folder:/config"
+      # Remember to change.
+      - "/path/to/txAdmin/config:/txData"
+      # DO NOT CHANGE THIS (sql file dir)
+      - sqlfile:/sqlfile
+    ports:
+      - "30120:30120"
+      - "30120:30120/udp"
+      - "40120:40120"
+    environment:
+      SERVER_PROFILE: "default"
+      LICENCE_KEY: "license-key-here"
+      FIVEM_PORT: "30120"
+      WEB_PORT: "40120"
+      HOST_UID: 1000
+      HOST_GID: 100
+      FIVEM_HOSTNAME: "FiveMESX-Server"
+      STEAM_WEBAPIKEY: "steam-api-key"
+    depends_on:
+      - mariadb
+  mariadb:
+    image: mariadb:10.4
+    restart: on-failure
+    volumes:
+      # Remember to change.
+      - /path/to/mysql:/var/lib/mysql
+      # DO NOT CHANGE THIS (sql file dir)
+      - sqlfile:/docker-entrypoint-initdb.d/:ro
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin:latest
+    restart: on-failure
+    ports:
+      # Port to phpmyadmin webgui
+      - 8100:80
+    environment:
+      - PMA_HOST=mariadb
+    depends_on:
+      - mariadb
 ```
 
 When the container is running you can access txAdmin on the specified port and login with the username `administrator` and the password `adminadmin`. After login, immediately change login the password.
@@ -54,3 +94,4 @@ See [issue #3](https://github.com/spritsail/fivem/issues/3)
 
  - This image is based on the [spritsail/fivem](https://hub.docker.com/r/spritsail/fivem) image. Thanks to **Spritsail** !
  - Thanks to **tabarra** as the creator and maintainer of the [txAdmin](https://github.com/tabarra/txAdmin) repository!
+ - Thanks to [Andruida][git] that I forked this code from
