@@ -77,6 +77,10 @@ if ! find . -mindepth 1 | read; then
   echo "Your RCON password is set to: ${RCON_PASS}"
   echo -e "----------------------------------------------\n"
   sed -i "s/{LICENCE_KEY}/${LICENCE_KEY}/g" /config/server.cfg;
+  sed -i "s/{MYSQL_ROOT_PASSWORD}/${MYSQL_ROOT_PASSWORD}/g" /config/server.cfg;
+  sed -i "s/{MARIADB_DATABASE_NAME}/${MARIADB_DATABASE_NAME}/g" /config/server.cfg;
+  sed -i "s/{FIVEM_HOSTNAME}/${FIVEM_HOSTNAME}/g" /config/server.cfg;
+  sed -i "s/{STEAM_WEBAPIKEY}/${STEAM_WEBAPIKEY}/g" /config/server.cfg;
 fi
 
 chown "$HOST_USERNAME":"$HOST_GROUPNAME" -R /config
