@@ -8,8 +8,8 @@ This image includes [txAdmin](https://github.com/tabarra/txAdmin), an in-browser
 Upon first run, the configuration is generated in the host mount for the `/config` directory, and for the `/txData` directory (that contains the txAdmin configuration).
 This bundle is made to run with a Mariadb server.
 
-[![](https://images.microbadger.com/badges/version/henkallsn/docker-cod4.svg)](https://microbadger.com/images/henkallsn/docker-cod4 "Image Version")
-[![](https://images.microbadger.com/badges/image/henkallsn/docker-cod4.svg)](https://microbadger.com/images/henkallsn/docker-cod4 "Image Size")
+[![](https://images.microbadger.com/badges/version/henkallsn/fivem_esx_bundle.svg)](https://microbadger.com/images/henkallsn/fivem_esx_bundle "Get your own version badge on microbadger.com")
+[![](https://images.microbadger.com/badges/image/henkallsn/fivem_esx_bundle.svg)](https://microbadger.com/images/henkallsn/fivem_esx_bundle "Get your own image badge on microbadger.com")
 [![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=RVCZJCWKD9CSW&currency_code=EUR&source=url)
 
 ## Licence Key
