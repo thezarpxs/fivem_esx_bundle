@@ -20,6 +20,7 @@ RUN wget -O- http://runtime.fivem.net/artifacts/fivem/build_proot_linux/master/$
  && apk -p $PWD add tini mariadb-dev tzdata
 
 ADD server.cfg opt/cfx-server-data
+ADD resources.tar opt/cfx-server-data
 ADD entrypoint usr/bin/entrypoint
 
 RUN chmod +x /output/usr/bin/entrypoint
