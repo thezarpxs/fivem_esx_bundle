@@ -18,10 +18,10 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `FiveM01`
+-- Database: `FiveMESX`
 --
-CREATE DATABASE IF NOT EXISTS `FiveM01` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_bin;
-USE `FiveM01`;
+CREATE DATABASE IF NOT EXISTS `FiveMESX` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_bin;
+USE `FiveMESX`;
 
 -- --------------------------------------------------------
 
