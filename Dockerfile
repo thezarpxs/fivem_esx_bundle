@@ -22,7 +22,6 @@ RUN wget -O- http://runtime.fivem.net/artifacts/fivem/build_proot_linux/master/$
 ADD server.cfg opt/cfx-server-data
 ADD resources.tar opt/cfx-server-data
 ADD entrypoint usr/bin/entrypoint
-RUN tar xvf opt/cfx-server-data/resources.tar -C opt/cfx-server-data && rm opt/cfx-server-data/resources.tar
 RUN chmod +x /output/usr/bin/entrypoint
 
 #================
