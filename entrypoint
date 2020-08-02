@@ -30,6 +30,27 @@ if [ -z "${SERVER_PROFILE}" ]; then
   export SERVER_PROFILE="dev_server"
 fi
 
+if [ -z "${MARIADB_PASSWORD}" ]; then
+  echo "Databaser password not set. Using password"
+  export MARIADB_PASSWORD="password"
+fi
+
+if [ -z "${MARIADB_DATABASE_NAME}" ]; then
+  echo "Database Name not set. Using FiveM"
+  export MARIADB_DATABASE_NAME="FiveM"
+fi
+
+if [ -z "${FIVEM_HOSTNAME}" ]; then
+  echo "FiveM Hostname not set. Using FiveM Test Server"
+  export FIVEM_HOSTNAME="FiveM Test Server"
+fi
+
+if [ -z "${STEAM_WEBAPIKEY}" ]; then
+  echo "Steam Web API key, if you want to use Steam authentication (https://steamcommunity.com/dev/apikey)"
+  export STEAM_WEBAPIKEY=
+fi
+
+
 if ! getent group "${HOST_GID}" | cut -d: -f1 | read; then 
   addgroup fivem -g "${HOST_GID}"
   HOST_GROUPNAME="fivem"
