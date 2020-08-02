@@ -1,4 +1,5 @@
-[hub]: https://hub.docker.com/r/andruida/fivem
+<img align="right" src="https://raw.githubusercontent.com/henkall/docker-cod4/master/cod4.ico">
+[hub]: https://hub.docker.com/r/henkallsn/fivem_esx_bundle
 [git]: https://github.com/Andruida/fivem
 
 # [henkallsn/fivem_esx_bundle][hub]
@@ -90,4 +91,4 @@ See [issue #3](https://github.com/spritsail/fivem/issues/3)
 
  - This image is based on the [spritsail/fivem](https://hub.docker.com/r/spritsail/fivem) image. Thanks to **Spritsail** !
  - Thanks to **tabarra** as the creator and maintainer of the [txAdmin](https://github.com/tabarra/txAdmin) repository!
- - Thanks to Andruida that I forked this code from
+ - Thanks to [Andruida][git] that I forked this code from
