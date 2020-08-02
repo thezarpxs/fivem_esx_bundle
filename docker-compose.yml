@@ -1,6 +1,7 @@
 ---
 version: '2'
 services:
+# -------------------------------------------------------------------
   fivem:
     image: henkallsn/fivem_esx_bundle:latest
     container_name: fivem
@@ -31,6 +32,7 @@ services:
       STEAM_WEBAPIKEY: "api-key-herer"
     depends_on:
       - mariadb
+# -------------------------------------------------------------------
   mariadb:
     image: mariadb:10.4
     restart: on-failure
@@ -41,6 +43,9 @@ services:
       - sqlfile:/docker-entrypoint-initdb.d/:ro
     environment:
       MYSQL_ROOT_PASSWORD: password
+      # Change to your timezone
+      TZ: Europe/Copenhagen
+# -------------------------------------------------------------------
   phpmyadmin:
     image: phpmyadmin/phpmyadmin:latest
     restart: on-failure
@@ -50,3 +55,4 @@ services:
       - PMA_HOST=mariadb
     depends_on:
       - mariadb
+# -------------------------------------------------------------------
