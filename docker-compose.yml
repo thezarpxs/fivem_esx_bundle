@@ -21,7 +21,11 @@ services:
       WEB_PORT: "40120"
       HOST_UID: 1000
       HOST_GID: 1000
-      MARIADB_PASSWORD: "password"
       MARIADB_DATABASE_NAME: "name-of-database"
       FIVEM_HOSTNAME: "hostname-to-fivem-server"
       STEAM_WEBAPIKEY: "api-key-herer"
+  mariadb:
+    image: mariadb:10.4
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: password
