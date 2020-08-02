@@ -24,8 +24,22 @@ services:
       MARIADB_DATABASE_NAME: "name-of-database"
       FIVEM_HOSTNAME: "hostname-to-fivem-server"
       STEAM_WEBAPIKEY: "api-key-herer"
+    depends_on:
+      - mariadb
   mariadb:
     image: mariadb:10.4
-    restart: always
+    restart: on-failure
+    volumes:
+      # Remember to change.
+      - /path/to/mariadb:/var/lib/mysql
     environment:
       MYSQL_ROOT_PASSWORD: password
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin:latest
+    restart: on-failure
+    ports:
+      - 8100-8105:80
+    environment:
+      - PMA_HOST=mariadb
+    depends_on:
+      - mariadb
