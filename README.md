@@ -6,9 +6,10 @@ This docker image allows you to run a server for FiveM, a modded GTA multiplayer
 This image includes [txAdmin](https://github.com/tabarra/txAdmin), an in-browser server management software.
 Upon first run, the configuration is generated in the host mount for the `/config` directory, and for the `/txData` directory (that contains the txAdmin configuration).
 This bundle is made to run with a Mariadb server.
-<img align="right" width="250px" src="https://camo.githubusercontent.com/e5753900d8a8a9ead32f5c37b05b87fc223463eb/68747470733a2f2f692e696d6775722e636f6d2f6163563064664f2e706e67">
+
 ## Licence Key
 
+<img align="right" width="250px" src="https://camo.githubusercontent.com/e5753900d8a8a9ead32f5c37b05b87fc223463eb/68747470733a2f2f692e696d6775722e636f6d2f6163563064664f2e706e67">
 A freely obtained licence key is required to use this server, which should be declared as `$LICENCE_KEY`. A tutorial on how to obtain a licence key can be found [here](https://forum.fivem.net/t/explained-how-to-make-add-a-server-key/56120)
 
 ## Usage
