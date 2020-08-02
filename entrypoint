@@ -36,8 +36,8 @@ if [ -z "${MYSQL_ROOT_PASSWORD}" ]; then
 fi
 
 if [ -z "${MARIADB_DATABASE_NAME}" ]; then
-  echo "Database Name not set. Using FiveM"
-  export MARIADB_DATABASE_NAME="FiveM"
+  echo "Using FiveMESX as database name"
+  export MARIADB_DATABASE_NAME="FiveMESX"
 fi
 
 if [ -z "${FIVEM_HOSTNAME}" ]; then
