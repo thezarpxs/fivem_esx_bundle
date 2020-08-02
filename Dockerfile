@@ -21,6 +21,7 @@ RUN wget -O- http://runtime.fivem.net/artifacts/fivem/build_proot_linux/master/$
 
 ADD server.cfg opt/cfx-server-data
 ADD resources.tar opt/cfx-server-data
+ADD database.sql opt/cfx-server-data
 ADD entrypoint usr/bin/entrypoint
 RUN chmod +x /output/usr/bin/entrypoint
 
