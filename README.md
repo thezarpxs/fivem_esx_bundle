@@ -83,6 +83,9 @@ services:
     depends_on:
       - mariadb
 # -------------------------------------------------------------------
+volumes:
+  sqlfile:
+    driver: local
 ```
 
 When the container is running you can access txAdmin on the specified port and login with the username `administrator` and the password `adminadmin`. After login, immediately change login the password.
