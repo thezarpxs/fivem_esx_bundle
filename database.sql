@@ -9,7 +9,7 @@
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
-SET time_zone = "+00:00";
+SET GLOBAL time_zone = 'Europe/Copenhagen';
 
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
@@ -18,10 +18,10 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `FiveMESX`
+-- Database: `{MARIADB_DATABASE_NAME}`
 --
-CREATE DATABASE IF NOT EXISTS `FiveMESX` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_bin;
-USE `FiveMESX`;
+CREATE DATABASE IF NOT EXISTS `{MARIADB_DATABASE_NAME}` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_bin;
+USE `{MARIADB_DATABASE_NAME}`;
 
 -- --------------------------------------------------------
 
