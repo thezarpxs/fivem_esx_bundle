@@ -55,6 +55,9 @@ services:
       FIVEM_HOSTNAME: "FiveMESX-Server"
       # Remember to change.
       STEAM_WEBAPIKEY: "steam-api-key"
+      # Optional
+      MARIADB_DATABASE_NAME: "FiveMESX"
+      # Optional
       SQL_SERVER_NAME: "mariadb"
     depends_on:
       - mariadb
