@@ -35,6 +35,11 @@ if [ -z "${MYSQL_ROOT_PASSWORD}" ]; then
   export MYSQL_ROOT_PASSWORD="password"
 fi
 
+if [ -z "${SQL_SERVER_NAME}" ]; then
+  echo "Using mariadb as sql server"
+  export SQL_SERVER_NAME="mariadb"
+fi
+
 if [ -z "${MARIADB_DATABASE_NAME}" ]; then
   echo "Using FiveMESX as database name"
   export MARIADB_DATABASE_NAME="FiveMESX"
@@ -81,6 +86,7 @@ if ! find . -mindepth 1 | read; then
   sed -i "s/{MARIADB_DATABASE_NAME}/${MARIADB_DATABASE_NAME}/g" /config/server.cfg;
   sed -i "s/{FIVEM_HOSTNAME}/${FIVEM_HOSTNAME}/g" /config/server.cfg;
   sed -i "s/{STEAM_WEBAPIKEY}/${STEAM_WEBAPIKEY}/g" /config/server.cfg;
+  sed -i "s/{SQL_SERVER_NAME}/${SQL_SERVER_NAME}/g" /config/server.cfg;
 fi
 
 chown "$HOST_USERNAME":"$HOST_GROUPNAME" -R /sqlfile
@@ -89,6 +95,7 @@ chown "$HOST_USERNAME":"$HOST_GROUPNAME" -R /sqlfile
 
 FILE=/config/database.sql
 if test -f "$FILE"; then
+  sed -i "s/{MARIADB_DATABASE_NAME}/${MARIADB_DATABASE_NAME}/g" /config/database.sql;
   mv /config/database.sql /sqlfile
 fi
 
