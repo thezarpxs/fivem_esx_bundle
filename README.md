@@ -22,14 +22,12 @@ A freely obtained licence key is required to use this server, which should be de
 Use the docker-compose script provided:
 
 ```sh
----	  
+---
 version: '2'
 services:
 # -------------------------------------------------------------------
   fivem:
     image: henkallsn/fivem_esx_bundle:latest
-    container_name: fivem
-    restart: on-failure
     stdin_open: true
     tty: true
     volumes:
@@ -52,9 +50,9 @@ services:
       HOST_UID: 1000
       HOST_GID: 100
       # Remember to change.
-      FIVEM_HOSTNAME: "FiveMESX-Server"
+      FIVEM_HOSTNAME: "hostname-to-fivem-server"
       # Remember to change.
-      STEAM_WEBAPIKEY: "steam-api-key"
+      STEAM_WEBAPIKEY: "api-key-herer"
       # Optional
       MARIADB_DATABASE_NAME: "FiveMESX"
       # Optional
@@ -67,19 +65,19 @@ services:
     restart: on-failure
     volumes:
       # Remember to change.
-      - /path/to/mysql:/var/lib/mysql
+      - /path/to/mariadb:/var/lib/mysql
       # DO NOT CHANGE THIS (sql file dir)
       - sqlfile:/docker-entrypoint-initdb.d/:ro
     environment:
       # Remember to change.
       MYSQL_ROOT_PASSWORD: password
+      # Change to your timezone
+      TZ: Europe/Copenhagen
 # -------------------------------------------------------------------
   phpmyadmin:
     image: phpmyadmin/phpmyadmin:latest
-    restart: on-failure
     ports:
-      # Port to phpmyadmin webgui
-      - 8100:80
+      - 8100-8105:80
     environment:
       - PMA_HOST=mariadb
     depends_on:
