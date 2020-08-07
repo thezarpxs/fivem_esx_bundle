@@ -25,6 +25,7 @@ Use the docker-compose script provided:
 ---	  
 version: '2'
 services:
+# -------------------------------------------------------------------
   fivem:
     image: henkallsn/fivem_esx_bundle:latest
     container_name: fivem
@@ -44,17 +45,22 @@ services:
       - "40120:40120"
     environment:
       SERVER_PROFILE: "default"
+      # Remember to change.
       LICENCE_KEY: "license-key-here"
       FIVEM_PORT: "30120"
       WEB_PORT: "40120"
       HOST_UID: 1000
       HOST_GID: 100
+      # Remember to change.
       FIVEM_HOSTNAME: "FiveMESX-Server"
+      # Remember to change.
       STEAM_WEBAPIKEY: "steam-api-key"
+      SQL_SERVER_NAME: "mariadb"
     depends_on:
       - mariadb
+# -------------------------------------------------------------------
   mariadb:
-    image: mariadb:10.4
+    image: mariadb
     restart: on-failure
     volumes:
       # Remember to change.
@@ -62,7 +68,9 @@ services:
       # DO NOT CHANGE THIS (sql file dir)
       - sqlfile:/docker-entrypoint-initdb.d/:ro
     environment:
+      # Remember to change.
       MYSQL_ROOT_PASSWORD: password
+# -------------------------------------------------------------------
   phpmyadmin:
     image: phpmyadmin/phpmyadmin:latest
     restart: on-failure
@@ -73,6 +81,7 @@ services:
       - PMA_HOST=mariadb
     depends_on:
       - mariadb
+# -------------------------------------------------------------------
 ```
 
 When the container is running you can access txAdmin on the specified port and login with the username `administrator` and the password `adminadmin`. After login, immediately change login the password.
