@@ -27,7 +27,6 @@ version: '2'
 services:
   fivem:
     image: henkallsn/fivem_esx_bundle:latest
-    container_name: fivem
     restart: on-failure
     stdin_open: true
     tty: true
