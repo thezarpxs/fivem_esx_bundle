@@ -20,21 +20,26 @@ services:
     environment:
       SERVER_PROFILE: "default"
       # Remember to change.
-      LICENCE_KEY: "license-key-here"
-      FIVEM_PORT: "30120"
-      WEB_PORT: "40120"
+      LICENCE_KEY: license-key-here
+      FIVEM_PORT: 30120
+      WEB_PORT: 40120
       HOST_UID: 1000
       HOST_GID: 100
       # Remember to change.
-      FIVEM_HOSTNAME: "hostname-to-fivem-server"
+      FIVEM_HOSTNAME: hostname-to-fivem-server
       # Remember to change.
-      STEAM_WEBAPIKEY: "api-key-herer"
+      STEAM_WEBAPIKEY: api-key-herer
       # Optional
-      MARIADB_DATABASE_NAME: "FiveMESX"
+      MARIADB_DATABASE_NAME: FiveMESX
       # Optional
-      SQL_SERVER_NAME: "mariadb"
+      SQL_SERVER_NAME: mariadb
+      # Please read note.
+      MYSQL_ROOT_PASSWORD: password
     depends_on:
       - mariadb
+# -------------------------------------------------------------------
+# Note please read this:
+# MYSQL_ROOT_PASSWORD enviroment has to be the same value.
 # -------------------------------------------------------------------
   mariadb:
     image: mariadb
@@ -45,7 +50,7 @@ services:
       # DO NOT CHANGE THIS (sql file dir)
       - sqlfile:/docker-entrypoint-initdb.d/:ro
     environment:
-      # Remember to change.
+      # Please read note.
       MYSQL_ROOT_PASSWORD: password
       # Change to your timezone
       TZ: Europe/Copenhagen
