@@ -14,7 +14,6 @@ This bundle is made to run with a Mariadb server.
 
 ## Licence Key
 
-
 A freely obtained licence key is required to use this server, which should be declared as `$LICENCE_KEY`. A tutorial on how to obtain a licence key can be found [here](https://forum.fivem.net/t/explained-how-to-make-add-a-server-key/56120)
 
 ## Usage
@@ -44,21 +43,26 @@ services:
     environment:
       SERVER_PROFILE: "default"
       # Remember to change.
-      LICENCE_KEY: "license-key-here"
-      FIVEM_PORT: "30120"
-      WEB_PORT: "40120"
+      LICENCE_KEY: license-key-here
+      FIVEM_PORT: 30120
+      WEB_PORT: 40120
       HOST_UID: 1000
       HOST_GID: 100
       # Remember to change.
-      FIVEM_HOSTNAME: "hostname-to-fivem-server"
+      FIVEM_HOSTNAME: hostname-to-fivem-server
       # Remember to change.
-      STEAM_WEBAPIKEY: "api-key-herer"
+      STEAM_WEBAPIKEY: api-key-herer
       # Optional
-      MARIADB_DATABASE_NAME: "FiveMESX"
+      MARIADB_DATABASE_NAME: FiveMESX
       # Optional
       SQL_SERVER_NAME: "mariadb"
+      # Remember to change. Please read note.
+      MYSQL_ROOT_PASSWORD: password
     depends_on:
       - mariadb
+# -------------------------------------------------------------------
+# Note please read this:
+# MYSQL_ROOT_PASSWORD enviroment has to be the same value both places.
 # -------------------------------------------------------------------
   mariadb:
     image: mariadb
@@ -69,7 +73,7 @@ services:
       # DO NOT CHANGE THIS (sql file dir)
       - sqlfile:/docker-entrypoint-initdb.d/:ro
     environment:
-      # Remember to change.
+      # Remember to change. Please read note.
       MYSQL_ROOT_PASSWORD: password
       # Change to your timezone
       TZ: Europe/Copenhagen
@@ -105,6 +109,7 @@ See [issue #3](https://github.com/spritsail/fivem/issues/3)
 
 ## Credits 
 <img align="right" height="200px" src="https://raw.githubusercontent.com/tabarra/txAdmin/master/docs/banner.png">
+
  - This image is based on the [spritsail/fivem](https://hub.docker.com/r/spritsail/fivem) image. Thanks to **Spritsail** !
  - Thanks to **tabarra** as the creator and maintainer of the [txAdmin](https://github.com/tabarra/txAdmin) repository!
  - Thanks to [Andruida][git] that I forked this code from
