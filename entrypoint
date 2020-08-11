@@ -89,14 +89,10 @@ if ! find . -mindepth 1 | read; then
   sed -i "s/{SQL_SERVER_NAME}/${SQL_SERVER_NAME}/g" /config/server.cfg;
 fi
 
-chown "$HOST_USERNAME":"$HOST_GROUPNAME" -R /sqlfile
-# find /sqlfile -type d -exec chmod 770 {} +
-# find /sqlfile -type f -exec chmod 660 {} +
-
 FILE=/config/database.sql
 if test -f "$FILE"; then
   sed -i "s/{MARIADB_DATABASE_NAME}/${MARIADB_DATABASE_NAME}/g" /config/database.sql;
-  mv /config/database.sql /sqlfile
+  mv /config/database.sql /docker-entrypoint-initdb.d/database.sql
 fi
 
 chown "$HOST_USERNAME":"$HOST_GROUPNAME" -R /config
