@@ -2,7 +2,7 @@ ARG FIVEM_NUM=2786
 ARG FIVEM_VER=2786-8ce1ab72e79fdc5d4f771a155debce76381db02a
 ARG DATA_VER=dd38bd01923a0595ecccef8026f1310304d7b0e3
 
-FROM spritsail/alpine:3.10 as builder
+FROM yobasystems/alpine-mariadb:latest as builder
 
 ARG FIVEM_VER
 ARG DATA_VER
@@ -43,6 +43,8 @@ LABEL maintainer="Spritsail <fivem@spritsail.io>" \
       io.spritsail.version.fivem_data=${DATA_VER}
 
 COPY --from=builder /output/ /
+
+
 
 WORKDIR /config
 EXPOSE 30120
