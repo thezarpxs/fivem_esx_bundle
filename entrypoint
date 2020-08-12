@@ -1,5 +1,6 @@
 #!/bin/sh
 
+# Checking environments and setting defaults ----- Start ----- >
 if [ -z "${HOST_UID}" ]; then
   echo "Host user ID not found in environment. Using root (0)."
   export HOST_UID=0
@@ -54,8 +55,10 @@ if [ -z "${STEAM_WEBAPIKEY}" ]; then
   echo "Steam Web API key, if you want to use Steam authentication (https://steamcommunity.com/dev/apikey)"
   export STEAM_WEBAPIKEY=
 fi
+# Checking environments and setting defaults ----- End ----- <
 
 
+# Making fivem user and group to run the server -------------------
 if ! getent group "${HOST_GID}" | cut -d: -f1 | read; then 
   addgroup fivem -g "${HOST_GID}"
   HOST_GROUPNAME="fivem"
@@ -69,9 +72,9 @@ if ! getent passwd "${HOST_UID}" | cut -d: -f1 | read; then
 else
   HOST_USERNAME=`getent passwd "${HOST_UID}" | cut -d: -f1`
 fi
+# -----------------------------------------------------------------
 
-
-
+# Copying and customizing server files -----------------------------------------
 if ! find . -mindepth 1 | read; then
   echo -e "Creating default configs...\n"
   cp -r /opt/cfx-server-data/* /config
@@ -88,30 +91,40 @@ if ! find . -mindepth 1 | read; then
   sed -i "s/{STEAM_WEBAPIKEY}/${STEAM_WEBAPIKEY}/g" /config/server.cfg;
   sed -i "s/{SQL_SERVER_NAME}/${SQL_SERVER_NAME}/g" /config/server.cfg;
 fi
+# -------------------------------------------------------------------------------
 
+
+# Editing and moving the sql file to the correct lacation. ----------------
 FILE=/config/database.sql
 if test -f "$FILE"; then
   sed -i "s/{MARIADB_DATABASE_NAME}/${MARIADB_DATABASE_NAME}/g" /config/database.sql;
   mv /config/database.sql /docker-entrypoint-initdb.d/database.sql
   chown mysql:mysql -R /docker-entrypoint-initdb.d
 fi
+# --------------------------------------------------------------------------
 
+# Setting permissions on config folder. (Contains resources folder)
 chown "$HOST_USERNAME":"$HOST_GROUPNAME" -R /config
-# find /config -type d -exec chmod 770 {} +
-# find /config -type f -exec chmod 660 {} +
+# ------------------------------------------------------------------
 
 if [ -z "${LICENCE_KEY}" ]; then
   echo "Licence key not found in environment, please create one at https://keymaster.fivem.net!"
   exit 1
 fi
 
+# Making and setting permissions on txData folder ------
 mkdir -p /txData
 chown ${HOST_USERNAME}:${HOST_GROUPNAME} -R /txData
-# find /txData -type d -exec chmod 770 {} +
-# find /txData -type f -exec chmod 660 {} +
+# -------------------------------------------------------
 
+# Starting the sql database -----------------------------
+/scripts/run.sh &
+# -------------------------------------------------------
+
+# Starting fiveM servrer --------------------------------
 exec su "$HOST_USERNAME" -c "/opt/cfx-server/FXServer \
        +set citizen_dir /opt/cfx-server/citizen/ \
        +set serverProfile ${SERVER_PROFILE} \
        +set txAdminPort ${WEB_PORT} \
        $@"
+# -------------------------------------------------------
