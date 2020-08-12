@@ -34,16 +34,14 @@ services:
       - "/path/to/resources/folder:/config"
       # Remember to change.
       - "/path/to/txAdmin/config:/txData"
-      # DO NOT CHANGE THIS (sql file dir)
-      - sqlfile:/sqlfile
+      # Remember to change.
+      - "/path/to/mysql/data:/var/lib/mysql"
     ports:
       - "30120:30120"
       - "30120:30120/udp"
       - "40120:40120"
     environment:
       SERVER_PROFILE: "default"
-      # Remember to change.
-      LICENCE_KEY: license-key-here
       FIVEM_PORT: 30120
       WEB_PORT: 40120
       HOST_UID: 1000
@@ -51,30 +49,15 @@ services:
       # Remember to change.
       FIVEM_HOSTNAME: hostname-to-fivem-server
       # Remember to change.
-      STEAM_WEBAPIKEY: api-key-herer
-      # Optional
-      MARIADB_DATABASE_NAME: FiveMESX
-      # Optional
-      SQL_SERVER_NAME: "mariadb"
-      # Remember to change. Please read note.
-      MYSQL_ROOT_PASSWORD: password
-    depends_on:
-      - mariadb
-# -------------------------------------------------------------------
-# Note please read this:
-# MYSQL_ROOT_PASSWORD enviroment has to be the same value both places.
-# -------------------------------------------------------------------
-  mariadb:
-    image: mariadb
-    restart: on-failure
-    volumes:
+      LICENCE_KEY: license-key-here
       # Remember to change.
-      - /path/to/mariadb:/var/lib/mysql
-      # DO NOT CHANGE THIS (sql file dir)
-      - sqlfile:/docker-entrypoint-initdb.d/:ro
-    environment:
-      # Remember to change. Please read note.
-      MYSQL_ROOT_PASSWORD: password
+      STEAM_WEBAPIKEY: api-key-herer
+      # Database stuff ---------------
+      DATABASE_SERVICE_NAME: fivem
+      MYSQL_DATABASE: FiveMESX
+      MYSQL_USER: database username
+      MYSQL_PASSWORD: database password
+      MYSQL_RANDOM_ROOT_PASSWORD: 1
       # Change to your timezone
       TZ: Europe/Copenhagen
 # -------------------------------------------------------------------
@@ -87,9 +70,6 @@ services:
     depends_on:
       - mariadb
 # -------------------------------------------------------------------
-volumes:
-  sqlfile:
-    driver: local
 ```
 
 When the container is running you can access txAdmin on the specified port and login with the username `administrator` and the password `adminadmin`. After login, immediately change login the password.
