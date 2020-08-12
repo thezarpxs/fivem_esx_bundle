@@ -33,7 +33,7 @@ fi
 
 if [ -z "${MYSQL_PASSWORD}" ]; then
   echo "Databaser password not set. Using password"
-  export MYSQL_ROOT_PASSWORD="password"
+  export MYSQL_PASSWORD="password"
 fi
 
 if [ -z "${DATABASE_SERVICE_NAME}" ]; then
