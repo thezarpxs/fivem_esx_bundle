@@ -14,7 +14,7 @@ This bundle is made to run with a Mariadb server.
 
 ## Licence Key
 
-A freely obtained licence key is required to use this server, which should be declared as `$LICENCE_KEY`. A tutorial on how to obtain a licence key can be found [here](https://forum.fivem.net/t/explained-how-to-make-add-a-server-key/56120)
+A freely obtained licence key is required to use this server, which should be declared as `FIVEM_LICENCE_KEY`. A tutorial on how to obtain a licence key can be found [here](https://forum.fivem.net/t/explained-how-to-make-add-a-server-key/56120)
 
 ## Usage
 
@@ -49,7 +49,7 @@ services:
       # Remember to change.
       FIVEM_HOSTNAME: hostname-to-fivem-server
       # Remember to change.
-      LICENCE_KEY: license-key-here
+      FIVEM_LICENCE_KEY: license-key-here
       # Remember to change.
       STEAM_WEBAPIKEY: api-key-herer
       # Database stuff ---------------
