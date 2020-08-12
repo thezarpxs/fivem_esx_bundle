@@ -31,19 +31,19 @@ if [ -z "${SERVER_PROFILE}" ]; then
   export SERVER_PROFILE="dev_server"
 fi
 
-if [ -z "${MYSQL_ROOT_PASSWORD}" ]; then
+if [ -z "${MYSQL_PASSWORD}" ]; then
   echo "Databaser password not set. Using password"
   export MYSQL_ROOT_PASSWORD="password"
 fi
 
-if [ -z "${SQL_SERVER_NAME}" ]; then
+if [ -z "${DATABASE_SERVICE_NAME}" ]; then
   echo "Using mariadb as sql server"
-  export SQL_SERVER_NAME="mariadb"
+  export DATABASE_SERVICE_NAME="fivem"
 fi
 
-if [ -z "${MARIADB_DATABASE_NAME}" ]; then
+if [ -z "${MYSQL_DATABASE}" ]; then
   echo "Using FiveMESX as database name"
-  export MARIADB_DATABASE_NAME="FiveMESX"
+  export MYSQL_DATABASE="FiveMESX"
 fi
 
 if [ -z "${FIVEM_HOSTNAME}" ]; then
@@ -85,11 +85,11 @@ if ! find . -mindepth 1 | read; then
   echo "Your RCON password is set to: ${RCON_PASS}"
   echo -e "----------------------------------------------\n"
   sed -i "s/{LICENCE_KEY}/${LICENCE_KEY}/g" /config/server.cfg;
-  sed -i "s/{MYSQL_ROOT_PASSWORD}/${MYSQL_ROOT_PASSWORD}/g" /config/server.cfg;
-  sed -i "s/{MARIADB_DATABASE_NAME}/${MARIADB_DATABASE_NAME}/g" /config/server.cfg;
+  sed -i "s/{MYSQL_PASSWORD}/${MYSQL_PASSWORD}/g" /config/server.cfg;
+  sed -i "s/{MYSQL_DATABASE}/${MYSQL_DATABASE}/g" /config/server.cfg;
   sed -i "s/{FIVEM_HOSTNAME}/${FIVEM_HOSTNAME}/g" /config/server.cfg;
   sed -i "s/{STEAM_WEBAPIKEY}/${STEAM_WEBAPIKEY}/g" /config/server.cfg;
-  sed -i "s/{SQL_SERVER_NAME}/${SQL_SERVER_NAME}/g" /config/server.cfg;
+  sed -i "s/{DATABASE_SERVICE_NAME}/${DATABASE_SERVICE_NAME}/g" /config/server.cfg;
 fi
 # -------------------------------------------------------------------------------
 
@@ -97,7 +97,7 @@ fi
 # Editing and moving the sql file to the correct lacation. ----------------
 FILE=/config/database.sql
 if test -f "$FILE"; then
-  sed -i "s/{MARIADB_DATABASE_NAME}/${MARIADB_DATABASE_NAME}/g" /config/database.sql;
+  sed -i "s/{MYSQL_DATABASE}/${MYSQL_DATABASE}/g" /config/database.sql;
   mv /config/database.sql /docker-entrypoint-initdb.d/database.sql
   chown mysql:mysql -R /docker-entrypoint-initdb.d
 fi
