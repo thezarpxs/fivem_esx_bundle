@@ -11,9 +11,9 @@ if [ -z "${HOST_GID}" ]; then
   export HOST_GID=0
 fi
 
-if [ -z "${LICENCE_KEY}" ]; then
+if [ -z "${FIVEM_LICENCE_KEY}" ]; then
   echo "Licence key not found in environment, please create one at https://keymaster.fivem.net!"
-  export LICENCE_KEY=
+  export FIVEM_LICENCE_KEY=
 fi
 
 if [ -z "${FIVEM_PORT}" ]; then
@@ -84,11 +84,12 @@ if ! find . -mindepth 1 | read; then
   echo "----------------------------------------------"
   echo "Your RCON password is set to: ${RCON_PASS}"
   echo -e "----------------------------------------------\n"
-  sed -i "s/{LICENCE_KEY}/${LICENCE_KEY}/g" /config/server.cfg;
-  sed -i "s/{MYSQL_PASSWORD}/${MYSQL_PASSWORD}/g" /config/server.cfg;
-  sed -i "s/{MYSQL_DATABASE}/${MYSQL_DATABASE}/g" /config/server.cfg;
   sed -i "s/{FIVEM_HOSTNAME}/${FIVEM_HOSTNAME}/g" /config/server.cfg;
   sed -i "s/{STEAM_WEBAPIKEY}/${STEAM_WEBAPIKEY}/g" /config/server.cfg;
+  sed -i "s/{FIVEM_LICENCE_KEY}/${FIVEM_LICENCE_KEY}/g" /config/server.cfg;
+  sed -i "s/{MYSQL_USER}/${MYSQL_USER}/g" /config/server.cfg;
+  sed -i "s/{MYSQL_PASSWORD}/${MYSQL_PASSWORD}/g" /config/server.cfg;
+  sed -i "s/{MYSQL_DATABASE}/${MYSQL_DATABASE}/g" /config/server.cfg;
   sed -i "s/{DATABASE_SERVICE_NAME}/${DATABASE_SERVICE_NAME}/g" /config/server.cfg;
 fi
 # -------------------------------------------------------------------------------
@@ -107,7 +108,7 @@ fi
 chown "$HOST_USERNAME":"$HOST_GROUPNAME" -R /config
 # ------------------------------------------------------------------
 
-if [ -z "${LICENCE_KEY}" ]; then
+if [ -z "${FIVEM_LICENCE_KEY}" ]; then
   echo "Licence key not found in environment, please create one at https://keymaster.fivem.net!"
   exit 1
 fi
