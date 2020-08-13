@@ -68,7 +68,7 @@ EOF
 	    fi
 	fi
 	# echo "----------------------------  Now i am herer 2 -------------------------------------------------- "
-	/usr/bin/mysqld --user=mysql --bootstrap --verbose=0 --skip-name-resolve --skip-networking=0 < $tfile
+	/usr/bin/mysqld --user=mysql --bootstrap --verbose=0 --skip-name-resolve --skip-networking=0 < $tfile > /dev/null 2>&1
 	rm -f $tfile
 	echo " --------------------  trying to go into /docker-entrypoint-initdb.d/  ------------------------ "
 	for f in /docker-entrypoint-initdb.d/*; do
