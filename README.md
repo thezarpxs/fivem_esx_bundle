@@ -6,7 +6,7 @@
 This docker image allows you to run a server for FiveM, a modded GTA multiplayer program.
 This image includes [txAdmin](https://github.com/tabarra/txAdmin), an in-browser server management software.
 Upon first run, the configuration is generated in the host mount for the `/config` directory, and for the `/txData` directory (that contains the txAdmin configuration).
-This bundle is made to run with a Mariadb server.
+This bundle is made with a inbuild Mariadb server.
 
 [![](https://images.microbadger.com/badges/version/henkallsn/fivem_esx_bundle.svg)](https://microbadger.com/images/henkallsn/fivem_esx_bundle "Get your own version badge on microbadger.com")
 [![](https://images.microbadger.com/badges/image/henkallsn/fivem_esx_bundle.svg)](https://microbadger.com/images/henkallsn/fivem_esx_bundle "Get your own image badge on microbadger.com")
