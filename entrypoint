@@ -96,10 +96,11 @@ fi
 
 
 # Editing and moving the sql file to the correct lacation. ----------------
-FILE=/config/database.sql
+
+FILE=/opt/cfx-server/database.sql
 if test -f "$FILE"; then
-  sed -i "s/{MYSQL_DATABASE}/${MYSQL_DATABASE}/g" /config/database.sql;
-  mv /config/database.sql /docker-entrypoint-initdb.d/database.sql
+  sed -i "s/{MYSQL_DATABASE}/${MYSQL_DATABASE}/g" "$FILE";
+  mv "$FILE" /docker-entrypoint-initdb.d/database.sql
   chown mysql:mysql -R /docker-entrypoint-initdb.d
 fi
 # --------------------------------------------------------------------------
