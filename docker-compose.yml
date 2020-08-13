@@ -3,7 +3,7 @@ version: '2'
 services:
 # -------------------------------------------------------------------
   fivem:
-    image: henkallsn/fivem_esx_bundle:mariadb-image
+    image: henkallsn/fivem_esx_bundle:mariadb
     stdin_open: true
     tty: true
     volumes:
@@ -11,14 +11,14 @@ services:
       - "/path/to/resources/folder:/config"
       # Remember to change.
       - "/path/to/txAdmin/config:/txData"
+      # Remember to change.
+      - "/path/to/mysql/data:/var/lib/mysql"
     ports:
       - "30120:30120"
       - "30120:30120/udp"
       - "40120:40120"
     environment:
       SERVER_PROFILE: "default"
-      # Remember to change.
-      LICENCE_KEY: license-key-here
       FIVEM_PORT: 30120
       WEB_PORT: 40120
       HOST_UID: 1000
@@ -26,13 +26,17 @@ services:
       # Remember to change.
       FIVEM_HOSTNAME: hostname-to-fivem-server
       # Remember to change.
-      STEAM_WEBAPIKEY: api-key-herer
-      # Optional
-      MARIADB_DATABASE_NAME: FiveMESX
-      # Optional
-      SQL_SERVER_NAME: mariadb
-      # Please read note.
-      MYSQL_ROOT_PASSWORD: password
+      FIVEM_LICENCE_KEY: license-key-here
+      # Remember to change.
+      STEAM_WEBAPIKEY: api-key-here
+      # Database stuff ---------------
+      DATABASE_SERVICE_NAME: fivem
+      MYSQL_DATABASE: FiveMESX
+      MYSQL_USER: username
+      MYSQL_PASSWORD: password
+      MYSQL_RANDOM_ROOT_PASSWORD: 1
+      # Change to your timezone
+      TZ: Europe/Copenhagen
 # -------------------------------------------------------------------
   phpmyadmin:
     image: phpmyadmin/phpmyadmin:latest
