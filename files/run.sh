@@ -96,6 +96,5 @@ do
 		. ${i}
 	fi
 done
-
-exec /usr/bin/mysqld --user=mysql --console --skip-name-resolve --skip-networking=0 $@ > /dev/null 2>&1
 echo ' -------------- FiveM Server is ready now and is running successfully ----------------- '
+exec /usr/bin/mysqld --user=mysql --console --skip-name-resolve --skip-networking=0 $@ > /dev/null 2>&1
