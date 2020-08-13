@@ -120,7 +120,7 @@ chown ${HOST_USERNAME}:${HOST_GROUPNAME} -R /txData
 # -------------------------------------------------------
 
 # Starting the sql database -----------------------------
-/scripts/run.sh >/dev/null 2>&1
+/scripts/run.sh &
 # -------------------------------------------------------
 
 # Starting fiveM servrer --------------------------------
