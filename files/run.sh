@@ -51,7 +51,7 @@ SET PASSWORD FOR 'root'@'localhost'=PASSWORD('${MYSQL_ROOT_PASSWORD}') ;
 DROP DATABASE IF EXISTS test ;
 FLUSH PRIVILEGES ;
 EOF
-	echo "------------------------- am i even close? ----------------------------------"
+	# echo "------------------------- am i even close? ----------------------------------"
 	if [ "$MYSQL_DATABASE" != "" ]; then
 	    echo "[i] Creating database: $MYSQL_DATABASE"
 		if [ "$MYSQL_CHARSET" != "" ] && [ "$MYSQL_COLLATION" != "" ]; then
@@ -61,18 +61,18 @@ EOF
 			echo "[i] with character set: 'utf8' and collation: 'utf8_general_ci'"
 			echo "CREATE DATABASE IF NOT EXISTS \`$MYSQL_DATABASE\` CHARACTER SET utf8 COLLATE utf8_general_ci;" >> $tfile
 		fi
-	echo "----------------------------  Now i am herer 1 -------------------------------------------------- "
+	# echo "----------------------------  Now i am herer 1 -------------------------------------------------- "
 	 if [ "$MYSQL_USER" != "" ]; then
 		echo "[i] Creating user: $MYSQL_USER with password $MYSQL_PASSWORD"
 		echo "GRANT ALL ON \`$MYSQL_DATABASE\`.* to '$MYSQL_USER'@'%' IDENTIFIED BY '$MYSQL_PASSWORD';" >> $tfile
 	    fi
 	fi
-	echo "----------------------------  Now i am herer 2 -------------------------------------------------- "
+	# echo "----------------------------  Now i am herer 2 -------------------------------------------------- "
 	/usr/bin/mysqld --user=mysql --bootstrap --verbose=0 --skip-name-resolve --skip-networking=0 < $tfile
 	rm -f $tfile
 	echo " --------------------  trying to go into /docker-entrypoint-initdb.d/  ------------------------ "
 	for f in /docker-entrypoint-initdb.d/*; do
-		echo " ---------------------------------------I am in /docker-entrypoint-initdb.d/-----------------------------------"
+		# echo " ---------------------------------------I am in /docker-entrypoint-initdb.d/-----------------------------------"
 		case "$f" in
 			*.sql)    echo "$0: running $f"; /usr/bin/mysqld --user=mysql --bootstrap --verbose=0 --skip-name-resolve --skip-networking=0 < "$f"  > /dev/null 2>&1; echo ;;
 			*.sql.gz) echo "$0: running $f"; gunzip -c "$f" | /usr/bin/mysqld --user=mysql --bootstrap --verbose=0 --skip-name-resolve --skip-networking=0 < "$f"  > /dev/null 2>&1; echo ;;
