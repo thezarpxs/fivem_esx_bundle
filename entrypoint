@@ -21,9 +21,9 @@ if [ -z "${FIVEM_PORT}" ]; then
   export FIVEM_PORT=30120
 fi
 
-if [ -z "${WEB_PORT}" ]; then
+if [ -z "${TXADMIN_PORT}" ]; then
   echo "Web port not found in environment."
-  export WEB_PORT=40120
+  export TXADMIN_PORT=40120
 fi
 
 if [ -z "${SERVER_PROFILE}" ]; then
@@ -127,6 +127,6 @@ chown ${HOST_USERNAME}:${HOST_GROUPNAME} -R /txData
 exec su "$HOST_USERNAME" -c "/opt/cfx-server/FXServer \
        +set citizen_dir /opt/cfx-server/citizen/ \
        +set serverProfile ${SERVER_PROFILE} \
-       +set txAdminPort ${WEB_PORT} \
+       +set txAdminPort ${TXADMIN_PORT} \
        $@"
 # -------------------------------------------------------
