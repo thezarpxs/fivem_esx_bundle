@@ -43,7 +43,7 @@ services:
     environment:
       SERVER_PROFILE: "default"
       FIVEM_PORT: 30120
-      WEB_PORT: 40120
+      TXADMIN_PORT: 40120
       HOST_UID: 1000
       HOST_GID: 100
       # Remember to change.
