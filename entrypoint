@@ -22,7 +22,7 @@ if [ -z "${FIVEM_PORT}" ]; then
 fi
 
 if [ -z "${TXADMIN_PORT}" ]; then
-  echo "Web port not found in environment."
+  echo "txAdmin port not found in environment."
   export TXADMIN_PORT=40120
 fi
 
