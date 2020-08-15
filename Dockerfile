@@ -1,8 +1,8 @@
-ARG FIVEM_NUM=2786
-ARG FIVEM_VER=2786-8ce1ab72e79fdc5d4f771a155debce76381db02a
+ARG FIVEM_NUM=2837
+ARG FIVEM_VER=2837-1adbc94db37f67986cce6a33fec698542ab83fe3
 ARG DATA_VER=dd38bd01923a0595ecccef8026f1310304d7b0e3
 
-FROM spritsail/alpine:3.10 as builder
+FROM yobasystems/alpine-mariadb:latest as builder
 
 ARG FIVEM_VER
 ARG DATA_VER
@@ -33,19 +33,30 @@ ARG FIVEM_VER
 ARG FIVEM_NUM
 ARG DATA_VER
 
-LABEL maintainer="Spritsail <fivem@spritsail.io>" \
-      org.label-schema.vendor="Spritsail" \
-      org.label-schema.name="FiveM" \
+LABEL org.label-schema.name="FiveM" \
       org.label-schema.url="https://fivem.net" \
       org.label-schema.description="FiveM is a modification for Grand Theft Auto V enabling you to play multiplayer on customized dedicated servers." \
-      org.label-schema.version=${FIVEM_NUM} \
-      io.spritsail.version.fivem=${FIVEM_VER} \
-      io.spritsail.version.fivem_data=${DATA_VER}
+      org.label-schema.version=${FIVEM_NUM}
 
 COPY --from=builder /output/ /
 
+
+
 WORKDIR /config
+
+RUN apk add --no-cache mariadb mariadb-client mariadb-server-utils pwgen tzdata && \
+    rm -f /var/cache/apk/*
+
+ADD files/run.sh /scripts/run.sh
+RUN mkdir /docker-entrypoint-initdb.d && \
+    mkdir /scripts/pre-exec.d && \
+    mkdir /scripts/pre-init.d && \
+    chmod -R 755 /scripts
+
+EXPOSE 3306
 EXPOSE 30120
+
+VOLUME ["/var/lib/mysql"]
 
 # Default to an empty CMD, so we can use it to add seperate args to the binary
 CMD [""]

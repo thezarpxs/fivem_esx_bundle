@@ -3,7 +3,7 @@ version: '2'
 services:
 # -------------------------------------------------------------------
   fivem:
-    image: henkallsn/fivem_esx_bundle:latest
+    image: henkallsn/fivem_esx_bundle
     stdin_open: true
     tty: true
     volumes:
@@ -11,47 +11,30 @@ services:
       - "/path/to/resources/folder:/config"
       # Remember to change.
       - "/path/to/txAdmin/config:/txData"
-      # DO NOT CHANGE THIS (sql file dir)
-      - sqlfile:/sqlfile
+      # Remember to change.
+      - "/path/to/mysql/data:/var/lib/mysql"
     ports:
       - "30120:30120"
       - "30120:30120/udp"
       - "40120:40120"
     environment:
       SERVER_PROFILE: "default"
-      # Remember to change.
-      LICENCE_KEY: license-key-here
       FIVEM_PORT: 30120
-      WEB_PORT: 40120
+      TXADMIN_PORT: 40120
       HOST_UID: 1000
       HOST_GID: 100
       # Remember to change.
       FIVEM_HOSTNAME: hostname-to-fivem-server
       # Remember to change.
-      STEAM_WEBAPIKEY: api-key-herer
-      # Optional
-      MARIADB_DATABASE_NAME: FiveMESX
-      # Optional
-      SQL_SERVER_NAME: mariadb
-      # Please read note.
-      MYSQL_ROOT_PASSWORD: password
-    depends_on:
-      - mariadb
-# -------------------------------------------------------------------
-# Note please read this:
-# MYSQL_ROOT_PASSWORD enviroment has to be the same value.
-# -------------------------------------------------------------------
-  mariadb:
-    image: mariadb
-    restart: on-failure
-    volumes:
+      FIVEM_LICENCE_KEY: license-key-here
       # Remember to change.
-      - /path/to/mariadb:/var/lib/mysql
-      # DO NOT CHANGE THIS (sql file dir)
-      - sqlfile:/docker-entrypoint-initdb.d/:ro
-    environment:
-      # Please read note.
-      MYSQL_ROOT_PASSWORD: password
+      STEAM_WEBAPIKEY: api-key-here
+      # Database stuff ---------------
+      DATABASE_SERVICE_NAME: fivem
+      MYSQL_DATABASE: FiveMESX
+      MYSQL_USER: username
+      MYSQL_PASSWORD: password
+      MYSQL_RANDOM_ROOT_PASSWORD: 1
       # Change to your timezone
       TZ: Europe/Copenhagen
 # -------------------------------------------------------------------
@@ -60,7 +43,7 @@ services:
     ports:
       - 8100-8105:80
     environment:
-      - PMA_HOST=mariadb
+      - PMA_HOST=fivem
     depends_on:
-      - mariadb
+      - fivem
 # -------------------------------------------------------------------

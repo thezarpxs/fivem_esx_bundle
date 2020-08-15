@@ -1,5 +1,6 @@
 #!/bin/sh
 
+# Checking environments and setting defaults ----- Start ----- >
 if [ -z "${HOST_UID}" ]; then
   echo "Host user ID not found in environment. Using root (0)."
   export HOST_UID=0
@@ -10,9 +11,9 @@ if [ -z "${HOST_GID}" ]; then
   export HOST_GID=0
 fi
 
-if [ -z "${LICENCE_KEY}" ]; then
+if [ -z "${FIVEM_LICENCE_KEY}" ]; then
   echo "Licence key not found in environment, please create one at https://keymaster.fivem.net!"
-  export LICENCE_KEY=
+  export FIVEM_LICENCE_KEY=
 fi
 
 if [ -z "${FIVEM_PORT}" ]; then
@@ -20,9 +21,9 @@ if [ -z "${FIVEM_PORT}" ]; then
   export FIVEM_PORT=30120
 fi
 
-if [ -z "${WEB_PORT}" ]; then
-  echo "Web port not found in environment."
-  export WEB_PORT=40120
+if [ -z "${TXADMIN_PORT}" ]; then
+  echo "txAdmin port not found in environment."
+  export TXADMIN_PORT=40120
 fi
 
 if [ -z "${SERVER_PROFILE}" ]; then
@@ -30,19 +31,19 @@ if [ -z "${SERVER_PROFILE}" ]; then
   export SERVER_PROFILE="dev_server"
 fi
 
-if [ -z "${MYSQL_ROOT_PASSWORD}" ]; then
+if [ -z "${MYSQL_PASSWORD}" ]; then
   echo "Databaser password not set. Using password"
-  export MYSQL_ROOT_PASSWORD="password"
+  export MYSQL_PASSWORD="password"
 fi
 
-if [ -z "${SQL_SERVER_NAME}" ]; then
+if [ -z "${DATABASE_SERVICE_NAME}" ]; then
   echo "Using mariadb as sql server"
-  export SQL_SERVER_NAME="mariadb"
+  export DATABASE_SERVICE_NAME="fivem"
 fi
 
-if [ -z "${MARIADB_DATABASE_NAME}" ]; then
+if [ -z "${MYSQL_DATABASE}" ]; then
   echo "Using FiveMESX as database name"
-  export MARIADB_DATABASE_NAME="FiveMESX"
+  export MYSQL_DATABASE="FiveMESX"
 fi
 
 if [ -z "${FIVEM_HOSTNAME}" ]; then
@@ -54,8 +55,10 @@ if [ -z "${STEAM_WEBAPIKEY}" ]; then
   echo "Steam Web API key, if you want to use Steam authentication (https://steamcommunity.com/dev/apikey)"
   export STEAM_WEBAPIKEY=
 fi
+# Checking environments and setting defaults ----- End ----- <
 
 
+# Making fivem user and group to run the server -------------------
 if ! getent group "${HOST_GID}" | cut -d: -f1 | read; then 
   addgroup fivem -g "${HOST_GID}"
   HOST_GROUPNAME="fivem"
@@ -69,9 +72,9 @@ if ! getent passwd "${HOST_UID}" | cut -d: -f1 | read; then
 else
   HOST_USERNAME=`getent passwd "${HOST_UID}" | cut -d: -f1`
 fi
+# -----------------------------------------------------------------
 
-
-
+# Copying and customizing server files -----------------------------------------
 if ! find . -mindepth 1 | read; then
   echo -e "Creating default configs...\n"
   cp -r /opt/cfx-server-data/* /config
@@ -81,40 +84,49 @@ if ! find . -mindepth 1 | read; then
   echo "----------------------------------------------"
   echo "Your RCON password is set to: ${RCON_PASS}"
   echo -e "----------------------------------------------\n"
-  sed -i "s/{LICENCE_KEY}/${LICENCE_KEY}/g" /config/server.cfg;
-  sed -i "s/{MYSQL_ROOT_PASSWORD}/${MYSQL_ROOT_PASSWORD}/g" /config/server.cfg;
-  sed -i "s/{MARIADB_DATABASE_NAME}/${MARIADB_DATABASE_NAME}/g" /config/server.cfg;
   sed -i "s/{FIVEM_HOSTNAME}/${FIVEM_HOSTNAME}/g" /config/server.cfg;
   sed -i "s/{STEAM_WEBAPIKEY}/${STEAM_WEBAPIKEY}/g" /config/server.cfg;
-  sed -i "s/{SQL_SERVER_NAME}/${SQL_SERVER_NAME}/g" /config/server.cfg;
+  sed -i "s/{FIVEM_LICENCE_KEY}/${FIVEM_LICENCE_KEY}/g" /config/server.cfg;
+  sed -i "s/{MYSQL_USER}/${MYSQL_USER}/g" /config/server.cfg;
+  sed -i "s/{MYSQL_PASSWORD}/${MYSQL_PASSWORD}/g" /config/server.cfg;
+  sed -i "s/{MYSQL_DATABASE}/${MYSQL_DATABASE}/g" /config/server.cfg;
+  sed -i "s/{DATABASE_SERVICE_NAME}/${DATABASE_SERVICE_NAME}/g" /config/server.cfg;
 fi
+# -------------------------------------------------------------------------------
 
-chown "$HOST_USERNAME":"$HOST_GROUPNAME" -R /sqlfile
-# find /sqlfile -type d -exec chmod 770 {} +
-# find /sqlfile -type f -exec chmod 660 {} +
 
-FILE=/config/database.sql
+# Editing and moving the sql file to the correct lacation. ----------------
+
+FILE=/opt/cfx-server-data/database.sql
 if test -f "$FILE"; then
-  sed -i "s/{MARIADB_DATABASE_NAME}/${MARIADB_DATABASE_NAME}/g" /config/database.sql;
-  mv /config/database.sql /sqlfile
+  sed -i "s/{MYSQL_DATABASE}/${MYSQL_DATABASE}/g" "$FILE";
+  mv "$FILE" /docker-entrypoint-initdb.d/database.sql
+  chown mysql:mysql -R /docker-entrypoint-initdb.d
 fi
+# --------------------------------------------------------------------------
 
+# Setting permissions on config folder. (Contains resources folder)
 chown "$HOST_USERNAME":"$HOST_GROUPNAME" -R /config
-# find /config -type d -exec chmod 770 {} +
-# find /config -type f -exec chmod 660 {} +
+# ------------------------------------------------------------------
 
-if [ -z "${LICENCE_KEY}" ]; then
+if [ -z "${FIVEM_LICENCE_KEY}" ]; then
   echo "Licence key not found in environment, please create one at https://keymaster.fivem.net!"
   exit 1
 fi
 
+# Making and setting permissions on txData folder ------
 mkdir -p /txData
 chown ${HOST_USERNAME}:${HOST_GROUPNAME} -R /txData
-# find /txData -type d -exec chmod 770 {} +
-# find /txData -type f -exec chmod 660 {} +
+# -------------------------------------------------------
 
+# Starting the sql database -----------------------------
+/scripts/run.sh &
+# -------------------------------------------------------
+
+# Starting fiveM servrer --------------------------------
 exec su "$HOST_USERNAME" -c "/opt/cfx-server/FXServer \
        +set citizen_dir /opt/cfx-server/citizen/ \
        +set serverProfile ${SERVER_PROFILE} \
-       +set txAdminPort ${WEB_PORT} \
+       +set txAdminPort ${TXADMIN_PORT} \
        $@"
+# -------------------------------------------------------
