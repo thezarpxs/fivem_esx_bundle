@@ -84,8 +84,8 @@ See [issue #3](https://github.com/spritsail/fivem/issues/3)
 | ** Variable name ** | **Description** | **Value** |
 |---|---|---|
 | PHPMYADMIN_PORT | Port used for getting to phpMyAdmin webgui. | 8100 |
-| TXADMIN_PORT | Port used for getting to txAdmin webgui. | 40120 |
-| FIVEM_PORT | Port used to connect to the FiveM Server |  30120 |
+| TXADMIN_PORT | Port used for getting to txAdmin webgui. Will be used in the server.cfg. | 40120 |
+| FIVEM_PORT | Port used to connect to the FiveM Server. Will be used in the server.cfg. |  30120 |
 | STEAM_WEBAPIKEY | This is you Steam Web api key. Will be used in the server.cfg.  |  |
 | FIVEM_HOSTNAME | This will be the FiveM Server name in game. Will be used in the server.cfg.  | FiveMESX Game |
 | FIVEM_LICENCE_KEY | This is you FiveM License key wich is needed to start the server. Will be used in the server.cfg.  |  |
