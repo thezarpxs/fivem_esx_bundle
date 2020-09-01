@@ -51,7 +51,7 @@ services:
       HOST_UID: 1000
       HOST_GID: 100
       # Remember to change.
-      FIVEM_HOSTNAME: hostname-to-fivem-server
+      FIVEM_HOSTNAME: hostname-to-fivem-gameserver
       # Remember to change.
       FIVEM_LICENCE_KEY: license-key-here
       # Remember to change.
@@ -70,9 +70,9 @@ services:
     ports:
       - 8100-8105:80
     environment:
-      - PMA_HOST=mariadb
+      - PMA_HOST=fivem
     depends_on:
-      - mariadb
+      - fivem
 # -------------------------------------------------------------------
 ```
 
