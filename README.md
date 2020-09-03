@@ -38,7 +38,7 @@ services:
       - "/path/to/resources/folder:/config"
       # Remember to change.
       - "/path/to/txAdmin/config:/txData"
-      # Remember to change.
+      # Remember to change. Do not place this on a ZFS.
       - "/path/to/mysql/data:/var/lib/mysql"
     ports:
       - "30120:30120"
