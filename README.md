@@ -79,9 +79,15 @@ services:
 _It is important that you use `interactive` and `pseudo-tty` options otherwise the container will crash on startup_
 See [issue #3](https://github.com/spritsail/fivem/issues/3)
 
+## Important Tags
+| **Tag name** | **Description** |
+|---|---|
+|latest| This tag is used by default. Makes the database use innodb engine.|
+|zfs| This tag has to be added. This makes the database able to run on a system with zfs. Using myisam engine.|
+
 ### Environment Varibles
 
-| ** Variable name ** | **Description** | **Value** |
+| **Variable name** | **Description** | **Value** |
 |---|---|---|
 | TXADMIN_PORT | Port used for getting to txAdmin webgui. Will be used in the server.cfg. | 40120 |
 | FIVEM_PORT | Port used to connect to the FiveM Server. Will be used in the server.cfg. |  30120 |
