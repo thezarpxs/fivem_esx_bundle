@@ -31,6 +31,7 @@ else
 	if [ "$MYSQL_ROOT_PASSWORD" = "" ]; then
 		MYSQL_ROOT_PASSWORD=`pwgen 16 1`
 		echo "[i] MySQL root Password: $MYSQL_ROOT_PASSWORD"
+		echo "[i] MySQL root Password: $MYSQL_ROOT_PASSWORD" >> /txData/default/logs/admin.log
 	fi
 
 	MYSQL_DATABASE=${MYSQL_DATABASE:-""}
