@@ -1,14 +1,13 @@
-ARG FIVEM_NUM=3184
-ARG FIVEM_VER=3184-6123f9196eb8cd2a987a1dd7ff7b36907a787962
+ARG FIVEM_NUM=3266
+ARG FIVEM_VER=3266-b250f54c39ce7183976446ffcf30656ebdca6c8b
 ARG DATA_VER=dd38bd01923a0595ecccef8026f1310304d7b0e3
-
-FROM yobasystems/alpine-mariadb:latest as builder
+FROM wodby/mariadb:latest as builder
 
 ARG FIVEM_VER
 ARG DATA_VER
 
 WORKDIR /output
-
+USER root
 RUN wget -O- http://runtime.fivem.net/artifacts/fivem/build_proot_linux/master/${FIVEM_VER}/fx.tar.xz \
         | tar xJ --strip-components=1 \
             --exclude alpine/dev --exclude alpine/proc \
