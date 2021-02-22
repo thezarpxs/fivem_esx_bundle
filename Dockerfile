@@ -7,14 +7,11 @@ ARG DATA_VER
 
 WORKDIR /output
 USER root
-RUN wget -O- http://runtime.fivem.net/artifacts/fivem/build_proot_linux/master/${FIVEM_VER}/fx.tar.xz \
-        | tar xJ --strip-components=1 \
-            --exclude alpine/dev --exclude alpine/proc \
-            --exclude alpine/run --exclude alpine/sys \
- && mkdir -p opt/cfx-server-data \
- && wget -O ${DATA_VER}.tar.gz https://codeload.github.com/citizenfx/cfx-server-data/tar.gz/${DATA_VER} \
- && tar -zxvf ${DATA_VER}.tar.gz --strip-components=1 -C opt/cfx-server-data \
- && apk -p $PWD add tini mariadb-dev tzdata
+RUN wget -O http://runtime.fivem.net/artifacts/fivem/build_proot_linux/master/${FIVEM_VER}/fx.tar.xz \
+        && tar xJf fx.tar.xz --strip-components=1 --exclude alpine/dev --exclude alpine/proc --exclude alpine/run --exclude alpine/sys \
+        && mkdir -p opt/cfx-server-data \
+        && wget -O ${DATA_VER}.tar.gz https://codeload.github.com/citizenfx/cfx-server-data/tar.gz/${DATA_VER} \
+        && tar -zxvf ${DATA_VER}.tar.gz --strip-components=1 -C opt/cfx-server-data
 
 
 ADD server.cfg opt/cfx-server-data
