@@ -7,7 +7,7 @@ ARG DATA_VER
 
 WORKDIR /output
 USER root
-RUN apk add --no-cache tini mariadb-dev tzdata xz-utils \
+RUN apk add --no-cache tini mariadb-dev tzdata xz \
     && rm -f /var/cache/apk/*
 RUN wget http://runtime.fivem.net/artifacts/fivem/build_proot_linux/master/${FIVEM_VER}/fx.tar.xz \
         && tar -xf fx.tar.xz --strip-components=1 --exclude alpine/dev --exclude alpine/proc --exclude alpine/run --exclude alpine/sys \
