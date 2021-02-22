@@ -42,7 +42,7 @@ COPY --from=builder /output/ /
 
 WORKDIR /config
 
-RUN apk add --no-cache mariadb mariadb-client mariadb-server-utils pwgen tzdata && \
+RUN apk add --no-cache mariadb mariadb-client mariadb-server-utils pwgen tzdata tini && \
     rm -f /var/cache/apk/*
 
 ADD files/run.sh /scripts/run.sh
