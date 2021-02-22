@@ -13,7 +13,7 @@ RUN wget -O- http://runtime.fivem.net/artifacts/fivem/build_proot_linux/master/$
             --exclude alpine/run --exclude alpine/sys \
  && mkdir -p opt/cfx-server-data \
  && wget -O- http://github.com/citizenfx/cfx-server-data/archive/${DATA_VER}.tar.gz \
-        | tar xz --strip-components=1 -C opt/cfx-server-data \
+        | tar xJ --strip-components=1 -C opt/cfx-server-data \
     \
  && apk -p $PWD add tini mariadb-dev tzdata
 
