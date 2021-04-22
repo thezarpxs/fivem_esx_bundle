@@ -134,6 +134,7 @@ services:
       - mariadb
 # -------------------------------------------------------------------
 ```
+OBS: When using the light version and the txadmin ask for database then you can just write mariadb in stead of localhost in the config.
 
 
 ### Environment Varibles
