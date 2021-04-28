@@ -97,6 +97,8 @@ services:
 # -------------------------------------------------------------------
   fivem01:
     image: henkallsn/fivem_esx_bundle:light
+    stdin_open: true
+    tty: true
     volumes:
       # Remember to change.
       - /path/to/AppData/FiveMESXlight/txData:/txData
