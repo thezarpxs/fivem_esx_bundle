@@ -1,22 +1,22 @@
----
 version: '2'
 services:
 # -------------------------------------------------------------------
   fivem:
     image: thezarpxs/fivem_esx_bundle
+    network_mode: "host"
     stdin_open: true
     tty: true
     volumes:
       # Remember to change.
-      - "/path/to/resources/folder:/config"
+      - "/volumes/fivem:/config"
       # Remember to change.
-      - "/path/to/txAdmin/config:/txData"
+      - "/volumes/txAdmin:/txData"
       # Remember to change.
-      - "/path/to/mysql/data:/var/lib/mysql"
+      - "/volumes/maria:/var/lib/mysql"
     ports:
       - "30120:30120"
       - "30120:30120/udp"
-      - "40120:40120"
+      - "45892:40120"
     environment:
       SERVER_PROFILE: "default"
       FIVEM_PORT: 30120
@@ -24,26 +24,16 @@ services:
       HOST_UID: 1000
       HOST_GID: 100
       # Remember to change.
-      FIVEM_HOSTNAME: hostname-to-fivem-server
+      FIVEM_HOSTNAME: 
       # Remember to change.
-      FIVEM_LICENCE_KEY: license-key-here
+      FIVEM_LICENCE_KEY: ""
       # Remember to change.
-      STEAM_WEBAPIKEY: api-key-here
+      STEAM_WEBAPIKEY: 
       # Database stuff ---------------
       DATABASE_SERVICE_NAME: fivem
-      MYSQL_DATABASE: FiveMESX
-      MYSQL_USER: username
-      MYSQL_PASSWORD: password
-      MYSQL_RANDOM_ROOT_PASSWORD: 1
+      MYSQL_DATABASE: 
+      MYSQL_USER: 
+      MYSQL_PASSWORD: 
+      MYSQL_ROOT_PASSWORD: 
       # Change to your timezone
       TZ: Europe/Copenhagen
-# -------------------------------------------------------------------
-  phpmyadmin:
-    image: phpmyadmin/phpmyadmin:latest
-    ports:
-      - 8100-8105:80
-    environment:
-      - PMA_HOST=fivem
-    depends_on:
-      - fivem
-# -------------------------------------------------------------------
